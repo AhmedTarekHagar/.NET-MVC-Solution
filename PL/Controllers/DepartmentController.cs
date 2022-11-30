@@ -18,6 +18,9 @@ namespace PL.Controllers
 
         public IActionResult Index()
         {
+            ViewData["Message"] = "Hello";
+            ViewBag.Hamda = "Hello From Hamada";
+
             var departments = _departmentRepository.GetAll();
             return View(departments);
         }

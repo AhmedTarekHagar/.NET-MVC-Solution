@@ -1,4 +1,5 @@
 ﻿using DAL.Entities;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,5 +10,6 @@ namespace BLL.Interfaces
 {
     public interface IDepartmentRepository : IGenericRepository<Department>
     {
+
     }
 }
