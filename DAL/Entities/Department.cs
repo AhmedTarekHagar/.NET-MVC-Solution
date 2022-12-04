@@ -15,8 +15,11 @@ namespace DAL.Entities
         [Required(ErrorMessage = "Code is Required!")]
         public string Code { get; set; }
         [Required(ErrorMessage = "Name is Required!")]
+        [MinLength(3, ErrorMessage = "Minimum Length Name is 3 characters")]
         [MaxLength(50, ErrorMessage = "Max Length Name is 50 characters")]
         public string Name { get; set; }
+
+        [DataType(DataType.Date)]
         public DateTime DateOfCreation { get; set; }
     }
 }

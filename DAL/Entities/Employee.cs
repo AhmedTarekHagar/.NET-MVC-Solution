@@ -16,7 +16,7 @@ namespace DAL.Entities
         [MinLength(3, ErrorMessage = "Minimum Length is 3 characters")]
         public string Name { get; set; }
 
-        [Range(22, 30, ErrorMessage = "Age must be between 20 and 30")]
+        [Range(22, 30, ErrorMessage = "Age must be between 22 and 30")]
         public int? Age { get; set; }
 
         [RegularExpression(@"^[0-9]{1,3}-[a-zA-Z]{5,10}-[a-zA-Z]{5,10}-[a-zA-Z]{5,10}$", ErrorMessage = "Address must follow the pattern 123-street-city-country")]
@@ -34,8 +34,9 @@ namespace DAL.Entities
         [Phone]
         public string PhoneNumber{ get; set; }
 
+        [DataType(DataType.Date)]
         public DateTime HireDate { get; set; }
-
+        [DataType(DataType.Date)]
         public DateTime CreationDate { get; set; } = DateTime.Now;
     }
 }

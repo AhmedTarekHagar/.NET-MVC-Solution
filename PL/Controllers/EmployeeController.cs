@@ -32,6 +32,7 @@ namespace PL.Controllers
             if (ModelState.IsValid)
             {
                 _employeeRepository.Add(employee);
+                TempData["Message"] = "Employee Created Successfully";
                 return RedirectToAction(nameof(Index));
             }
             return View(employee);
@@ -64,6 +65,7 @@ namespace PL.Controllers
                 try
                 {
                     _employeeRepository.Update(employee);
+                    TempData["Message"] = "Employee Updated Successfully";
                     return RedirectToAction(nameof(Index));
                 }
                 catch (Exception ex)
@@ -89,6 +91,7 @@ namespace PL.Controllers
             try
             {
                 _employeeRepository.Delete(employee);
+                TempData["Message"] = "Employee Deleted Successfully";
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)

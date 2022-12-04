@@ -18,9 +18,6 @@ namespace PL.Controllers
 
         public IActionResult Index()
         {
-            ViewData["Message"] = "Hello";
-            ViewBag.Hamda = "Hello From Hamada";
-
             var departments = _departmentRepository.GetAll();
             return View(departments);
         }
@@ -37,6 +34,7 @@ namespace PL.Controllers
             if (ModelState.IsValid)
             {
                 _departmentRepository.Add(department);
+                TempData["Message"] = "Department Created Successfully";
                 return RedirectToAction(nameof(Index));
             }
             return View(department);
@@ -69,6 +67,7 @@ namespace PL.Controllers
                 try
                 {
                     _departmentRepository.Update(department);
+                    TempData["Message"] = "Department Updated Successfully";
                     return RedirectToAction(nameof(Index));
                 }
                 catch(Exception ex)
@@ -94,6 +93,7 @@ namespace PL.Controllers
             try
             {
                 _departmentRepository.Delete(department);
+                TempData["Message"] = "Department Deleted Successfully";
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)
