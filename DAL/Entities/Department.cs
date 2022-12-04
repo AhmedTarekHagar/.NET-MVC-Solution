@@ -21,5 +21,7 @@ namespace DAL.Entities
 
         [DataType(DataType.Date)]
         public DateTime DateOfCreation { get; set; }
+
+        public ICollection<Employee> Employees { get; set; } = new HashSet<Employee>();
     }
 }

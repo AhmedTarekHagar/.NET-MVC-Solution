@@ -38,5 +38,7 @@ namespace DAL.Entities
         public DateTime HireDate { get; set; }
         [DataType(DataType.Date)]
         public DateTime CreationDate { get; set; } = DateTime.Now;
+
+        public Department Department { get; set; }
     }
 }
