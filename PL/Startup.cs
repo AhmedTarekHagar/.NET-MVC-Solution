@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using PL.Mappers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,10 +34,13 @@ namespace PL
             services.AddDbContext<MVCAppDbContext>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
-            });
+            }, ServiceLifetime.Singleton);
 
             services.AddScoped<IDepartmentRepository, DepartmentRepository>();
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+            services.AddAutoMapper(M => M.AddProfile<EmployeeProfile>());
+            services.AddAutoMapper(M => M.AddProfile<DepartmentProfile>());
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

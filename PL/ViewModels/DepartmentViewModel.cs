@@ -1,20 +1,19 @@
-﻿using Newtonsoft.Json.Serialization;
-using System;
+﻿using DAL.Entities;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System;
+using Microsoft.AspNetCore.Mvc;
 
-namespace DAL.Entities
+namespace PL.Models
 {
-    public class Department
+    public class DepartmentViewModel
     {
         public int Id { get; set; }
+        [Required(ErrorMessage = "Code is Required!")]
         public string Code { get; set; }
-        [Required]
-        [MaxLength(50)]
+        [Required(ErrorMessage = "Name is Required!")]
+        [MinLength(3, ErrorMessage = "Minimum Length Name is 3 characters")]
+        [MaxLength(50, ErrorMessage = "Max Length Name is 50 characters")]
         public string Name { get; set; }
 
         [DataType(DataType.Date)]

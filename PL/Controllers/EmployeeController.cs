@@ -1,23 +1,32 @@
-﻿using BLL.Interfaces;
+﻿using AutoMapper;
+using BLL.Interfaces;
 using DAL.Entities;
 using Microsoft.AspNetCore.Mvc;
+using PL.Models;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace PL.Controllers
 {
     public class EmployeeController : Controller
     {
         private readonly IEmployeeRepository _employeeRepository;
+        private readonly IDepartmentRepository _departmentRepository;
+        private readonly IMapper _mapper;
 
-        public EmployeeController(IEmployeeRepository employeeRepository)
+        public EmployeeController(IEmployeeRepository employeeRepository, IDepartmentRepository departmentRepository, IMapper mapper)
         {
             _employeeRepository = employeeRepository;
+            _departmentRepository = departmentRepository;
+            _mapper = mapper;
         }
 
         public IActionResult Index()
         {
             var employees = _employeeRepository.GetAll();
-            return View(employees);
+            var mappedEmployees = _mapper.Map<IEnumerable<Employee>, IEnumerable<EmployeeViewModel>>(employees);
+            return View(mappedEmployees);
         }
 
         public IActionResult Create()
@@ -27,15 +36,16 @@ namespace PL.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(Employee employee)
+        public IActionResult Create(EmployeeViewModel employeeVM)
         {
             if (ModelState.IsValid)
             {
-                _employeeRepository.Add(employee);
+                var mappedEmployee = _mapper.Map<EmployeeViewModel, Employee>(employeeVM);
+                _employeeRepository.Add(mappedEmployee);
                 TempData["Message"] = "Employee Created Successfully";
                 return RedirectToAction(nameof(Index));
             }
-            return View(employee);
+            return View(employeeVM);
         }
 
         public IActionResult Details(int? id, string ViewName = "Details")
@@ -45,8 +55,9 @@ namespace PL.Controllers
             var employee = _employeeRepository.Get(id.Value);
             if (employee == null)
                 return NotFound();
+            var mappedEmployee = _mapper.Map<Employee, EmployeeViewModel>(employee);
 
-            return View(ViewName, employee);
+            return View(ViewName, mappedEmployee);
         }
 
         public IActionResult Edit(int? id)
@@ -56,25 +67,26 @@ namespace PL.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit([FromRoute] int id, Employee employee)
+        public IActionResult Edit([FromRoute] int id, EmployeeViewModel employeeVM)
         {
-            if (id != employee.Id)
+            if (id != employeeVM.Id)
                 return BadRequest();
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _employeeRepository.Update(employee);
+                    var mappedEmployee = _mapper.Map<EmployeeViewModel, Employee>(employeeVM);
+                    _employeeRepository.Update(mappedEmployee);
                     TempData["Message"] = "Employee Updated Successfully";
                     return RedirectToAction(nameof(Index));
                 }
                 catch (Exception ex)
                 {
                     ModelState.AddModelError("", ex.Message);
-                    return View(employee);
+                    return View(employeeVM);
                 }
             }
-            return View(employee);
+            return View(employeeVM);
         }
 
         public IActionResult Delete(int? id)
@@ -84,20 +96,21 @@ namespace PL.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Delete(int? id, Employee employee)
+        public IActionResult Delete(int? id, EmployeeViewModel employeeVM)
         {
-            if (id != employee.Id)
+            if (id != employeeVM.Id)
                 return BadRequest();
             try
             {
-                _employeeRepository.Delete(employee);
+                var mappedEmployee = _mapper.Map<EmployeeViewModel, Employee>(employeeVM);
+                _employeeRepository.Delete(mappedEmployee);
                 TempData["Message"] = "Employee Deleted Successfully";
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)
             {
                 ModelState.AddModelError("", ex.Message);
-                return View(employee);
+                return View(employeeVM);
             }
         }
     }
