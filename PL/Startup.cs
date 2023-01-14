@@ -36,6 +36,7 @@ namespace PL
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             }, ServiceLifetime.Singleton);
 
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IDepartmentRepository, DepartmentRepository>();
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();
             services.AddAutoMapper(M => M.AddProfile<EmployeeProfile>());

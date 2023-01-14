@@ -11,20 +11,18 @@ namespace PL.Controllers
 {
     public class EmployeeController : Controller
     {
-        private readonly IEmployeeRepository _employeeRepository;
-        private readonly IDepartmentRepository _departmentRepository;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public EmployeeController(IEmployeeRepository employeeRepository, IDepartmentRepository departmentRepository, IMapper mapper)
+        public EmployeeController(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            _employeeRepository = employeeRepository;
-            _departmentRepository = departmentRepository;
+            _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
 
         public IActionResult Index()
         {
-            var employees = _employeeRepository.GetAll();
+            var employees = _unitOfWork.Repository<Employee>().GetAll();
             var mappedEmployees = _mapper.Map<IEnumerable<Employee>, IEnumerable<EmployeeViewModel>>(employees);
             return View(mappedEmployees);
         }
@@ -41,7 +39,7 @@ namespace PL.Controllers
             if (ModelState.IsValid)
             {
                 var mappedEmployee = _mapper.Map<EmployeeViewModel, Employee>(employeeVM);
-                _employeeRepository.Add(mappedEmployee);
+                _unitOfWork.Repository<Employee>().Add(mappedEmployee);
                 TempData["Message"] = "Employee Created Successfully";
                 return RedirectToAction(nameof(Index));
             }
@@ -52,7 +50,7 @@ namespace PL.Controllers
         {
             if (id == null)
                 return NotFound();
-            var employee = _employeeRepository.Get(id.Value);
+            var employee = _unitOfWork.Repository<Employee>().Get(id.Value);
             if (employee == null)
                 return NotFound();
             var mappedEmployee = _mapper.Map<Employee, EmployeeViewModel>(employee);
@@ -76,7 +74,7 @@ namespace PL.Controllers
                 try
                 {
                     var mappedEmployee = _mapper.Map<EmployeeViewModel, Employee>(employeeVM);
-                    _employeeRepository.Update(mappedEmployee);
+                    _unitOfWork.Repository<Employee>().Update(mappedEmployee);
                     TempData["Message"] = "Employee Updated Successfully";
                     return RedirectToAction(nameof(Index));
                 }
@@ -103,7 +101,7 @@ namespace PL.Controllers
             try
             {
                 var mappedEmployee = _mapper.Map<EmployeeViewModel, Employee>(employeeVM);
-                _employeeRepository.Delete(mappedEmployee);
+                _unitOfWork.Repository<Employee>().Delete(mappedEmployee);
                 TempData["Message"] = "Employee Deleted Successfully";
                 return RedirectToAction(nameof(Index));
             }
