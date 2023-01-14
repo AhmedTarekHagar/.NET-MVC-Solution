@@ -34,7 +34,7 @@ namespace PL
             services.AddDbContext<MVCAppDbContext>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
-            }, ServiceLifetime.Singleton);
+            });
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IDepartmentRepository, DepartmentRepository>();

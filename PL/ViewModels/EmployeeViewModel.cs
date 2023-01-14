@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using System;
+using Microsoft.AspNetCore.Http;
 
 namespace PL.Models
 {
@@ -39,5 +40,10 @@ namespace PL.Models
         public int? DepartmentId { get; set; }
 
         public Department Department { get; set; }
+
+        public IFormFile Image { get; set; }
+
+        public string ImageName { get; set; }
+
     }
 }

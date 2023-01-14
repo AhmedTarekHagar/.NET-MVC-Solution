@@ -10,10 +10,11 @@
 
 <form asp-action="Delete">
     <div asp-validation-summary="All"></div>
-    <input hidden asp-for="Id"/>
-    
+    <input hidden asp-for="Id" />
+    <input hidden asp-for="ImageName" />
+
     <partial name="PartialViews/DetailsDeleteEmployeePartialView" />
 
-    <input type="submit" value="Delete Department" class="btn btn-danger"/> | 
+    <input type="submit" value="Delete Department" class="btn btn-danger" /> |
     <a asp-action="Index" class="btn btn-light">Back to List</a>
 </form>

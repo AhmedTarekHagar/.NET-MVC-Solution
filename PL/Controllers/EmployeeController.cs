@@ -2,6 +2,7 @@
 using BLL.Interfaces;
 using DAL.Entities;
 using Microsoft.AspNetCore.Mvc;
+using PL.Helpers;
 using PL.Models;
 using System;
 using System.Collections;
@@ -20,7 +21,7 @@ namespace PL.Controllers
             _mapper = mapper;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(string SearchValue)
         {
             var employees = _unitOfWork.Repository<Employee>().GetAll();
             var mappedEmployees = _mapper.Map<IEnumerable<Employee>, IEnumerable<EmployeeViewModel>>(employees);
@@ -38,6 +39,7 @@ namespace PL.Controllers
         {
             if (ModelState.IsValid)
             {
+                employeeVM.ImageName = DocumentSettings.UploadFile(employeeVM.Image, "images");
                 var mappedEmployee = _mapper.Map<EmployeeViewModel, Employee>(employeeVM);
                 _unitOfWork.Repository<Employee>().Add(mappedEmployee);
                 TempData["Message"] = "Employee Created Successfully";
@@ -101,7 +103,9 @@ namespace PL.Controllers
             try
             {
                 var mappedEmployee = _mapper.Map<EmployeeViewModel, Employee>(employeeVM);
-                _unitOfWork.Repository<Employee>().Delete(mappedEmployee);
+                int count = _unitOfWork.Repository<Employee>().Delete(mappedEmployee);
+                if (count > 0)
+                    DocumentSettings.DeleteFile(employeeVM.ImageName, "images");
                 TempData["Message"] = "Employee Deleted Successfully";
                 return RedirectToAction(nameof(Index));
             }
