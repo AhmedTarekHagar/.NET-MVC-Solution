@@ -14,5 +14,7 @@ namespace BLL.Interfaces
         int Add(T item);
         int Update(T item);
         int Delete(T item);
+        IQueryable<T> GetByName(string name);
+
     }
 }

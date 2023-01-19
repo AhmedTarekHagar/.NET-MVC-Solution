@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace BLL.Repositories
 {
-    public class GenericRepository<T> : IGenericRepository<T> where T : class
+    public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
     {
         private readonly MVCAppDbContext _dbContext;
         public GenericRepository(MVCAppDbContext dbContext)
@@ -32,7 +32,7 @@ namespace BLL.Repositories
         public IEnumerable<T> GetAll()
         {
             if (typeof(T) == typeof(Employee))
-                return (IEnumerable<T>) _dbContext.Set<Employee>().Include(E => E.Department).ToList();
+                return (IEnumerable<T>)_dbContext.Set<Employee>().Include(E => E.Department).ToList();
 
             return _dbContext.Set<T>().ToList();
         }
@@ -45,5 +45,8 @@ namespace BLL.Repositories
             _dbContext.Set<T>().Update(item);
             return _dbContext.SaveChanges();
         }
+
+        public IQueryable<T> GetByName(string name)
+        => _dbContext.Set<T>().Where(R => R.Name.Contains(name));
     }
 }

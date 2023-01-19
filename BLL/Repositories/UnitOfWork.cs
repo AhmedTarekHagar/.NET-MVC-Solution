@@ -43,7 +43,7 @@ namespace BLL.Repositories
                 _repositories.Add(type, repository);
             }
 
-            return (IGenericRepository<TEntity>)_repositories[type];
+            return (IGenericRepository<TEntity>) _repositories[type];
         }
     }
 }

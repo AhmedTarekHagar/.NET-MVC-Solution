@@ -7,6 +7,7 @@ using PL.Models;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace PL.Controllers
 {
@@ -23,8 +24,13 @@ namespace PL.Controllers
 
         public IActionResult Index(string SearchValue)
         {
-            var employees = _unitOfWork.Repository<Employee>().GetAll();
+            var employees = Enumerable.Empty<Employee>();
+            if (string.IsNullOrEmpty(SearchValue))
+                employees = _unitOfWork.Repository<Employee>().GetAll();
+            else
+                employees = _unitOfWork.Repository<Employee>().GetByName(SearchValue);
             var mappedEmployees = _mapper.Map<IEnumerable<Employee>, IEnumerable<EmployeeViewModel>>(employees);
+
             return View(mappedEmployees);
         }
 

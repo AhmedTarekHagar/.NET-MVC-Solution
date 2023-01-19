@@ -14,7 +14,7 @@ namespace DAL.Entities
         public string Code { get; set; }
         [Required]
         [MaxLength(50)]
-        public string Name { get; set; }
+        public new string Name { get; set; }
 
         [DataType(DataType.Date)]
         public DateTime DateOfCreation { get; set; }
