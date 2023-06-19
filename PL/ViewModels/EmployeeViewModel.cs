@@ -18,7 +18,7 @@ namespace PL.Models
         [Range(22, 30, ErrorMessage = "Age must be between 22 and 30")]
         public int? Age { get; set; }
 
-        [RegularExpression(@"^[0-9]{1,3}-[a-zA-Z]{5,10}-[a-zA-Z]{5,10}-[a-zA-Z]{5,10}$", ErrorMessage = "Address must follow the pattern 123-street-city-country")]
+        //[RegularExpression(@"^[0-9]{1,3}-[a-zA-Z]{5,10}-[a-zA-Z]{5,10}-[a-zA-Z]{5,10}$", ErrorMessage = "Address must follow the pattern 123-street-city-country")]
         public string Address { get; set; }
 
         [DataType(DataType.Currency)]

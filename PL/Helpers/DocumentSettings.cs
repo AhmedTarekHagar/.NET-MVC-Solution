@@ -8,19 +8,18 @@ namespace PL.Helpers
     {
         public static string UploadFile(IFormFile file, string folderName)
         {
-            if (file != null)
-            {
-                string folderPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\files", folderName);
-                string fileName = $"{Guid.NewGuid()} - {file.FileName}";
-                string filePath = Path.Combine(folderPath, fileName);
+            if (file == null)
+                return null;
 
-                using var fileStream = new FileStream(filePath, FileMode.Create);
+            string folderPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\files", folderName);
+            string fileName = $"{Guid.NewGuid()} - {file.FileName}";
+            string filePath = Path.Combine(folderPath, fileName);
 
-                file.CopyTo(fileStream);
+            using var fileStream = new FileStream(filePath, FileMode.Create);
 
-                return fileName;
-            }
-            return null;
+            file.CopyTo(fileStream);
+
+            return fileName;
         }
 
         public static void DeleteFile(string fileName, string folderName)
